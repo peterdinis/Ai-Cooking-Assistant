@@ -182,7 +182,7 @@ function RecipePage() {
                     <Button
                         variant="secondary"
                         size="sm"
-                        className="mb-6 backdrop-blur-md bg-black/30 text-black border-white/10 hover:bg-black/50"
+                        className="mb-6 backdrop-blur-md bg-black/30 text-black dark:text-blue-50 border-white/10 hover:bg-black/50"
                         onClick={() => window.history.back()}
                     >
                         <ChevronLeft className="mr-2 w-4 h-4" /> Back
@@ -198,10 +198,10 @@ function RecipePage() {
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                         >
-                            <h1 className="text-4xl md:text-6xl font-black text-black mb-4 drop-shadow-xl">
+                            <h1 className="text-4xl md:text-6xl font-black text-black dark:text-blue-50 mb-4 drop-shadow-xl">
                                 {recipe?.title || recipeId}
                             </h1>
-                            <p className="text-lg text-black/80 max-w-2xl line-clamp-2">
+                            <p className="text-lg text-black dark:text-blue-50/80 max-w-2xl line-clamp-2">
                                 {recipe?.description}
                             </p>
                         </motion.div>

@@ -12,14 +12,16 @@ export const Route = createFileRoute('/')({
 function Index() {
     const navigate = useNavigate()
     const [query, setQuery] = useState('')
+    const [level, setLevel] = useState('Intermediate')
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         if (!query) return
-        navigate({ to: '/recipe/$recipeId', params: { recipeId: query } })
+        navigate({ to: '/recipe/$recipeId', params: { recipeId: `${query} for a ${level} cook` } })
     }
 
     const suggestions = ["Avocado Toast", "Beef Wellington", "Pad Thai", "Margherita Pizza"]
+    const levels = ["Beginner", "Intermediate", "Advanced", "Master"]
 
     return (
         <div className="min-h-screen bg-background relative overflow-hidden flex flex-col items-center justify-center p-6">
@@ -44,7 +46,7 @@ function Index() {
                         <span>Your Personal AI Chef</span>
                     </div>
 
-                    <h1 className="text-6xl md:text-8xl font-black tracking-tight text-black leading-[1.1]">
+                    <h1 className="text-6xl md:text-8xl font-black tracking-tight text-black dark:text-blue-50 leading-[1.1]">
                         Cook Smarter, <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-400 to-indigo-400">
                             Not Harder.
@@ -62,28 +64,46 @@ function Index() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.4, duration: 0.5 }}
-                    className="w-full max-w-xl mx-auto relative group"
+                    className="w-full max-w-xl mx-auto space-y-4"
                 >
-                    <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
-                    <form onSubmit={handleSubmit} className="relative flex items-center bg-card/80 backdrop-blur-xl border border-white/10 rounded-full p-2 shadow-2xl">
-                        <div className="pl-6 text-muted-foreground">
-                            <Search className="w-6 h-6" />
-                        </div>
-                        <Input
-                            placeholder="What are you craving today?"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            className="flex-1 border-none bg-transparent shadow-none focus-visible:ring-0 text-lg h-14 text-foreground placeholder:text-muted-foreground/70"
-                        />
-                        <Button
-                            type="submit"
-                            size="lg"
-                            disabled={!query}
-                            className="rounded-full h-12 px-8 font-semibold bg-blue-700 hover:bg-primary/90 text-white shadow-lg transition-transform active:scale-95"
-                        >
-                            Generate
-                        </Button>
-                    </form>
+                    {/* Level Selector */}
+                    <div className="flex justify-center gap-2">
+                        {levels.map((l) => (
+                            <button
+                                key={l}
+                                onClick={() => setLevel(l)}
+                                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${level === l
+                                        ? "bg-primary text-primary-foreground shadow-lg scale-105"
+                                        : "bg-accent/30 text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
+                                    }`}
+                            >
+                                {l}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
+                        <form onSubmit={handleSubmit} className="relative flex items-center bg-card/80 backdrop-blur-xl border border-white/10 rounded-full p-2 shadow-2xl">
+                            <div className="pl-6 text-muted-foreground">
+                                <Search className="w-6 h-6" />
+                            </div>
+                            <Input
+                                placeholder={`What are you craving, ${level} chef?`}
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                className="flex-1 border-none bg-transparent shadow-none focus-visible:ring-0 text-lg h-14 text-foreground placeholder:text-muted-foreground/70"
+                            />
+                            <Button
+                                type="submit"
+                                size="lg"
+                                disabled={!query}
+                                className="rounded-full h-12 px-8 font-semibold bg-blue-700 hover:bg-primary/90 text-white shadow-lg transition-transform active:scale-95"
+                            >
+                                Generate
+                            </Button>
+                        </form>
+                    </div>
                 </motion.div>
 
                 {/* Suggestions */}

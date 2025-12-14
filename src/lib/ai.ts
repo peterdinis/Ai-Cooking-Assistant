@@ -1,17 +1,17 @@
 import OpenAI from 'openai';
 
 const getOpenAIClient = () => {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
   if (!apiKey) throw new Error("Missing OpenAI API Key");
-  
-  return new OpenAI({ apiKey });
+
+  return new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 };
 
 const RECIPE_SYSTEM_PROMPT = "You are a helpful cooking assistant. Generate a recipe for the requested dish. Return valid JSON with fields: title, description, ingredients (array of strings), steps (array of objects with 'instruction' and 'imagePrompt').";
 
 export const generateRecipe = async (topic: string) => {
   const openai = getOpenAIClient();
-  
+
   const completion = await openai.chat.completions.create({
     messages: [
       { role: "system", content: RECIPE_SYSTEM_PROMPT },
@@ -26,7 +26,7 @@ export const generateRecipe = async (topic: string) => {
 
 export const generateImage = async (prompt: string) => {
   const openai = getOpenAIClient();
-  
+
   const response = await openai.images.generate({
     model: "dall-e-3",
     prompt,
