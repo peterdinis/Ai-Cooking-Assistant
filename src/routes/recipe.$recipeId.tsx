@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { generateRecipe, generateImage } from "@/lib/ai";
 import { Card, CardContent } from "@/components/ui/card";
@@ -19,6 +19,7 @@ import {
 
 export const Route = createFileRoute("/recipe/$recipeId")({
 	component: RecipePage,
+	notFoundComponent: () => notFound()
 });
 
 function RecipePage() {
