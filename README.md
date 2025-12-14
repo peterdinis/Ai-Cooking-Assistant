@@ -11,7 +11,7 @@
 
 ## 🛠️ Tech Stack
 
--   **Frontend**: React (Vite), TypeScript
+-   **Frontend**: Tanstack Start (Vite), TypeScript
 -   **Routing**: TanStack Router
 -   **State/Data**: TanStack Query
 -   **Styling**: Tailwind CSS, Lucide React (Icons)
