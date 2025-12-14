@@ -14,7 +14,6 @@ export const Route = createFileRoute('/recipe/$recipeId')({
 
 function RecipePage() {
     const { recipeId } = Route.useParams()
-
     const [isCookingMode, setIsCookingMode] = useState(false)
     const [currentStep, setCurrentStep] = useState(0)
 
@@ -35,15 +34,31 @@ function RecipePage() {
         isFetching: isImageFetching 
     } = useQuery({
         queryKey: ['image', recipeId],
-        queryFn: () => generateImage(recipeId + " gourmet food photography"),
+        queryFn: () => generateImage(
+            `${recipeId} gourmet food photography, professional culinary photo, high resolution, detailed, appetizing`
+        ),
         retry: false,
-        staleTime: Infinity
+        staleTime: Infinity,
+        enabled: !!recipeId
     })
 
     const isLoading = isRecipeLoading || isRecipeFetching
     const isImageLoadingOrFetching = isImageLoading || isImageFetching
 
-    // Error View
+    interface RecipeStep {
+        instruction: string;
+        imagePrompt: string;
+    }
+
+    interface RecipeData {
+        title: string;
+        description: string;
+        ingredients: string[];
+        steps: RecipeStep[];
+    }
+
+    const recipeData = recipe as RecipeData | undefined
+
     if (error) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background p-4">
@@ -58,10 +73,9 @@ function RecipePage() {
         )
     }
 
-    // COOKING WIZARD VIEW
-    if (isCookingMode && recipe) {
-        const totalSteps = recipe.steps.length
-        const step = recipe.steps[currentStep]
+    if (isCookingMode && recipeData) {
+        const totalSteps = recipeData.steps.length
+        const step = recipeData.steps[currentStep]
         const progress = ((currentStep + 1) / totalSteps) * 100
 
         return (
@@ -81,7 +95,7 @@ function RecipePage() {
                         className="absolute top-6 right-6 text-muted-foreground hover:text-foreground"
                         onClick={() => setIsCookingMode(false)}
                     >
-                        Exit Mode
+                        Exit Cooking Mode
                     </Button>
 
                     <AnimatePresence mode="wait">
@@ -136,8 +150,7 @@ function RecipePage() {
         )
     }
 
-    // FULL PAGE LOADING STATE
-    if (isLoading && !recipe) {
+    if (isLoading && !recipeData) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background">
                 <div className="text-center space-y-6">
@@ -156,10 +169,8 @@ function RecipePage() {
         )
     }
 
-    // MAIN LAYOUT
     return (
-        <div className="min-h-screen bg-background text-foreground pb-20">
-            {/* Hero Section */}
+        <div className="min-h-screen bg-background pb-20">
             <div className="h-[40vh] md:h-[50vh] relative w-full overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent z-10" />
                 
@@ -174,15 +185,19 @@ function RecipePage() {
                         transition={{ duration: 1.5 }}
                         src={imageUrl}
                         className="w-full h-full object-cover"
-                        alt={recipeId}
+                        alt={recipeData?.title || recipeId}
                     />
-                ) : null}
+                ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                        <Flame className="w-24 h-24 text-primary/40" />
+                    </div>
+                )}
 
                 <div className="absolute bottom-0 left-0 right-0 z-20 p-6 md:p-12 max-w-7xl mx-auto">
                     <Button
                         variant="secondary"
                         size="sm"
-                        className="mb-6 backdrop-blur-md bg-black/30 text-black dark:text-blue-50 border-white/10 hover:bg-black/50"
+                        className="mb-6 backdrop-blur-md bg-black/30 text-white border-white/10 hover:bg-black/50"
                         onClick={() => window.history.back()}
                     >
                         <ChevronLeft className="mr-2 w-4 h-4" /> Back
@@ -198,18 +213,17 @@ function RecipePage() {
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                         >
-                            <h1 className="text-4xl md:text-6xl font-black text-black dark:text-blue-50 mb-4 drop-shadow-xl">
-                                {recipe?.title || recipeId}
+                            <h1 className="text-4xl md:text-6xl font-black text-white mb-4 drop-shadow-xl">
+                                {recipeData?.title || recipeId}
                             </h1>
-                            <p className="text-lg text-black dark:text-blue-50/80 max-w-2xl line-clamp-2">
-                                {recipe?.description}
+                            <p className="text-lg text-white/80 max-w-2xl line-clamp-2">
+                                {recipeData?.description}
                             </p>
                         </motion.div>
                     )}
                 </div>
             </div>
 
-            {/* Content Grid */}
             <div className="max-w-7xl mx-auto px-6 md:px-12 -mt-8 relative z-30">
                 <motion.div
                     initial={{ y: 20, opacity: 0 }}
@@ -217,9 +231,7 @@ function RecipePage() {
                     transition={{ delay: 0.2 }}
                     className="grid grid-cols-1 lg:grid-cols-3 gap-8"
                 >
-                    {/* Left Column: Stats & Ingredients */}
                     <div className="space-y-6">
-                        {/* Stats Card */}
                         <Card className="border-border/50 bg-card/50 backdrop-blur-sm shadow-xl">
                             <CardContent className="p-6 flex justify-around">
                                 <div className="text-center">
@@ -242,7 +254,6 @@ function RecipePage() {
                             </CardContent>
                         </Card>
 
-                        {/* Ingredients */}
                         <Card className="border-border/50 bg-card/50 backdrop-blur-sm shadow-xl h-fit">
                             <CardContent className="p-6">
                                 <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
@@ -254,7 +265,7 @@ function RecipePage() {
                                     </div>
                                 ) : (
                                     <ul className="space-y-3">
-                                        {recipe?.ingredients?.map((ing: string, i: number) => (
+                                        {recipeData?.ingredients?.map((ing: string, i: number) => (
                                             <li key={i} className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer group">
                                                 <div className="mt-1 w-5 h-5 rounded-full border-2 border-muted-foreground/30 group-hover:border-primary transition-colors" />
                                                 <span className="text-muted-foreground group-hover:text-foreground transition-colors leading-tight">{ing}</span>
@@ -266,11 +277,10 @@ function RecipePage() {
                         </Card>
                     </div>
 
-                    {/* Right Column: Instructions */}
                     <div className="lg:col-span-2 space-y-6">
                         <div className="flex items-center justify-between mb-2">
                             <h3 className="text-2xl font-bold">Instructions</h3>
-                            {!isLoading && (
+                            {!isLoading && recipeData && (
                                 <Button 
                                     onClick={() => setIsCookingMode(true)} 
                                     className="shadow-lg shadow-primary/20"
@@ -295,7 +305,7 @@ function RecipePage() {
                             </div>
                         ) : (
                             <div className="space-y-6">
-                                {recipe?.steps?.map((step: any, i: number) => (
+                                {recipeData?.steps?.map((step: RecipeStep, i: number) => (
                                     <motion.div
                                         key={i}
                                         initial={{ opacity: 0, x: 20 }}
