@@ -1,9 +1,6 @@
 # 🍳 AI Cooking Assistant
 
 **Your Personal AI Chef** - Unlock culinary creativity with our AI-powered assistant. From pantry staples to gourmet meals, we guide you every step of the way.
-
-![Project Banner](https://images.unsplash.com/photo-1556910103-1c02745a30bf?q=80&w=2070&auto=format&fit=crop)
-
 ## ✨ Features
 
 -   **🤖 AI Recipe Generation**: Instantly generate detailed recipes for any dish you crave, powered by OpenAI.
