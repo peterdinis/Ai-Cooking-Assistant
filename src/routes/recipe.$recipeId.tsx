@@ -1,6 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { generateRecipe, generateImage } from "@/lib/ai";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,6 +15,7 @@ import {
 	ChevronLeft,
 	Loader2,
 } from "lucide-react";
+import { generateImage, generateRecipe } from "@/functions/aiFunctions";
 
 export const Route = createFileRoute("/recipe/$recipeId")({
 	component: RecipePage,
@@ -34,7 +34,11 @@ function RecipePage() {
 		error,
 	} = useQuery({
 		queryKey: ["recipe", recipeId],
-		queryFn: () => generateRecipe(recipeId),
+		queryFn: () => generateRecipe({
+			data: {
+				topic: recipeId
+			}
+		}),
 		retry: false,
 	});
 
@@ -46,7 +50,11 @@ function RecipePage() {
 		queryKey: ["image", recipeId],
 		queryFn: () =>
 			generateImage(
-				`${recipeId} gourmet food photography, professional culinary photo, high resolution, detailed, appetizing`,
+				{
+					data: {
+						prompt: `${recipeId} gourmet food photography, professional culinary photo, high resolution, detailed, appetizing`,
+					}
+				}
 			),
 		retry: false,
 		staleTime: Infinity,
