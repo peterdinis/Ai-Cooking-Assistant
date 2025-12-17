@@ -1,11 +1,11 @@
-import OpenAI from "openai";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-const getOpenAIClient = () => {
+const getOpenAIClient = async () => {
 	const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
 	if (!apiKey) throw new Error("Missing OpenAI API Key");
 
+	const OpenAI = (await import("openai")).default;
 	return new OpenAI({ apiKey });
 };
 
@@ -21,9 +21,9 @@ const promptSchema = z.object({
 });
 
 export const generateRecipe = createServerFn({ method: "POST" })
-	.inputValidator(recipeSchema)
+	.validator(recipeSchema)
 	.handler(async ({ data }) => {
-		const openai = getOpenAIClient();
+		const openai = await getOpenAIClient();
 
 		const completion = await openai.chat.completions.create({
 			messages: [
@@ -38,9 +38,9 @@ export const generateRecipe = createServerFn({ method: "POST" })
 	});
 
 export const generateImage = createServerFn({ method: "POST" })
-	.inputValidator(promptSchema)
+	.validator(promptSchema)
 	.handler(async ({ data }) => {
-		const openai = getOpenAIClient();
+		const openai = await getOpenAIClient();
 
 		const response = await openai.images.generate({
 			model: "dall-e-3",
