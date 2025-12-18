@@ -19,7 +19,7 @@ import { generateImage, generateRecipe } from "@/functions/aiFunctions";
 
 export const Route = createFileRoute("/recipe/$recipeId")({
 	component: RecipePage,
-	notFoundComponent: () => notFound()
+	notFoundComponent: () => notFound(),
 });
 
 function RecipePage() {
@@ -34,11 +34,12 @@ function RecipePage() {
 		error,
 	} = useQuery({
 		queryKey: ["recipe", recipeId],
-		queryFn: () => generateRecipe({
-			data: {
-				topic: recipeId
-			}
-		}),
+		queryFn: () =>
+			generateRecipe({
+				data: {
+					topic: recipeId,
+				},
+			}),
 		retry: false,
 	});
 
@@ -49,13 +50,11 @@ function RecipePage() {
 	} = useQuery({
 		queryKey: ["image", recipeId],
 		queryFn: () =>
-			generateImage(
-				{
-					data: {
-						prompt: `${recipeId} gourmet food photography, professional culinary photo, high resolution, detailed, appetizing`,
-					}
-				}
-			),
+			generateImage({
+				data: {
+					prompt: `${recipeId} gourmet food photography, professional culinary photo, high resolution, detailed, appetizing`,
+				},
+			}),
 		retry: false,
 		staleTime: Infinity,
 		enabled: !!recipeId,
