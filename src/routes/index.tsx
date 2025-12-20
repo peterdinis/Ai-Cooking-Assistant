@@ -53,9 +53,9 @@ function Index() {
 						<span>Your Personal AI Chef</span>
 					</div>
 
-					<h1 className="text-6xl md:text-8xl font-black tracking-tight text-black dark:text-blue-50 leading-[1.1]">
+					<h1 className="text-6xl md:text-8xl font-black tracking-tight text-neutral-900 dark:text-sky-100 leading-[1.1]">
 						Cook Smarter, <br />
-						<span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-400 to-indigo-400">
+						<span className="text-neutral-900 dark:text-sky-100 bg-clip-text bg-gradient-to-r from-primary via-purple-400 to-indigo-400">
 							Not Harder.
 						</span>
 					</h1>
