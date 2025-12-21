@@ -3,10 +3,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
-import { Search, Sparkles, ChefHat } from "lucide-react";
+import { Search, Sparkles, ChefHat, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
 	component: Index,
+	pendingComponent: () => <Loader2 className="animate-spin w-8 h-8" />
 });
 
 function Index() {
