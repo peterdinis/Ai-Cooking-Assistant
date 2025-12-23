@@ -7,7 +7,7 @@ import { Search, Sparkles, ChefHat, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
 	component: Index,
-	pendingComponent: () => <Loader2 className="animate-spin w-8 h-8" />
+	pendingComponent: () => <Loader2 className="animate-spin w-8 h-8" />,
 });
 
 function Index() {

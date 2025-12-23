@@ -20,7 +20,7 @@ import { generateImage, generateRecipe } from "@/functions/aiFunctions";
 export const Route = createFileRoute("/recipe/$recipeId")({
 	component: RecipePage,
 	notFoundComponent: () => notFound(),
-	pendingComponent: () => <Loader2 className="animate-spin w-8 h-8" />
+	pendingComponent: () => <Loader2 className="animate-spin w-8 h-8" />,
 });
 
 function RecipePage() {
