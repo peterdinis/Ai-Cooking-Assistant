@@ -13,7 +13,7 @@ const promptSchema = z.object({
 export const generateRecipe = async (input: { data: { topic: string } }) => {
 	// Validate input
 	const validated = recipeSchema.parse(input.data);
-	
+
 	const response = await fetch(`${API_BASE_URL}/api/generate-recipe`, {
 		method: "POST",
 		headers: {
@@ -23,7 +23,9 @@ export const generateRecipe = async (input: { data: { topic: string } }) => {
 	});
 
 	if (!response.ok) {
-		const error = await response.json().catch(() => ({ error: "Failed to generate recipe" }));
+		const error = await response
+			.json()
+			.catch(() => ({ error: "Failed to generate recipe" }));
 		throw new Error(error.error || "Failed to generate recipe");
 	}
 
@@ -33,7 +35,7 @@ export const generateRecipe = async (input: { data: { topic: string } }) => {
 export const generateImage = async (input: { data: { prompt: string } }) => {
 	// Validate input
 	const validated = promptSchema.parse(input.data);
-	
+
 	const response = await fetch(`${API_BASE_URL}/api/generate-image`, {
 		method: "POST",
 		headers: {
@@ -43,7 +45,9 @@ export const generateImage = async (input: { data: { prompt: string } }) => {
 	});
 
 	if (!response.ok) {
-		const error = await response.json().catch(() => ({ error: "Failed to generate image" }));
+		const error = await response
+			.json()
+			.catch(() => ({ error: "Failed to generate image" }));
 		throw new Error(error.error || "Failed to generate image");
 	}
 
