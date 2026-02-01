@@ -1,6 +1,5 @@
-import { RECIPE_SYSTEM_PROMPT } from "@/constants/applicationConstants";
-import { recipeSchema, promptSchema } from "@/schemas/recipeSchemas";
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 
 const getOpenAIClient = async () => {
 	const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
@@ -10,8 +9,19 @@ const getOpenAIClient = async () => {
 	return new OpenAI({ apiKey });
 };
 
+const RECIPE_SYSTEM_PROMPT =
+	"You are a helpful cooking assistant. Generate a recipe for the requested dish. Return valid JSON with fields: title, description, ingredients (array of strings), steps (array of objects with 'instruction' and 'imagePrompt').";
+
+const recipeSchema = z.object({
+	topic: z.string().min(3),
+});
+
+const promptSchema = z.object({
+	prompt: z.string().min(5),
+});
+
 export const generateRecipe = createServerFn({ method: "POST" })
-	.validator(recipeSchema)
+	.inputValidator(recipeSchema)
 	.handler(async ({ data }) => {
 		const openai = await getOpenAIClient();
 
@@ -28,7 +38,7 @@ export const generateRecipe = createServerFn({ method: "POST" })
 	});
 
 export const generateImage = createServerFn({ method: "POST" })
-	.validator(promptSchema)
+	.inputValidator(promptSchema)
 	.handler(async ({ data }) => {
 		const openai = await getOpenAIClient();
 
