@@ -243,10 +243,10 @@ function RecipePage() {
 							initial={{ y: 20, opacity: 0 }}
 							animate={{ y: 0, opacity: 1 }}
 						>
-							<h1 className="text-4xl md:text-6xl font-black text-white mb-4 drop-shadow-xl">
+							<h1 className="text-4xl md:text-6xl font-black text-neutral-900 dark:text-white mb-4 drop-shadow-xl">
 								{recipeData?.title || recipeId}
 							</h1>
-							<p className="text-lg text-white/80 max-w-2xl line-clamp-2">
+							<p className="text-lg te dark:text-white/80 max-w-2xl line-clamp-2">
 								{recipeData?.description}
 							</p>
 						</motion.div>
