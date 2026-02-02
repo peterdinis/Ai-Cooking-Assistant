@@ -31,13 +31,7 @@
     npm install
     ```
 
-3.  **Setup Environment Variables**
-    Create a `.env.local` file in the root directory and add your OpenAI API key:
-    ```bash
-    VITE_OPENAI_API_KEY=your_openai_api_key_here
-    ```
-
-4.  **Run the development server**
+3.  **Run the development server**
     ```bash
     npm run dev
     ```
