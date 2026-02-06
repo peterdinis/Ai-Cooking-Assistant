@@ -1,6 +1,5 @@
+import { API_BASE_URL } from "@/constants/applicationConstants";
 import { z } from "zod";
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 const recipeSchema = z.object({
 	topic: z.string().min(3),
