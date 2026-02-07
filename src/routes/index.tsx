@@ -46,7 +46,7 @@ function Index() {
 		"Butter Chicken",
 		"Chicken Biryani",
 		"Samosas",
-		"Pad See Ew"
+		"Pad See Ew",
 	];
 	const levels = ["Beginner", "Intermediate", "Advanced", "Master"];
 
@@ -98,10 +98,11 @@ function Index() {
 							<button
 								key={l}
 								onClick={() => setLevel(l)}
-								className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${level === l
+								className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+									level === l
 										? "bg-primary text-primary-foreground shadow-lg scale-105"
 										: "bg-accent/30 text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
-									}`}
+								}`}
 							>
 								{l}
 							</button>
