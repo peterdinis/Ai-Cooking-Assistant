@@ -1,5 +1,6 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { ModeToggle } from "@/components/mode-toggle";
+import ScrollToTop from "@/components/ScrollToTop";
 
 export const Route = createRootRoute({
 	component: () => (
@@ -8,6 +9,7 @@ export const Route = createRootRoute({
 				<ModeToggle />
 			</div>
 			<Outlet />
+			<ScrollToTop />
 		</>
 	),
 });
