@@ -28,12 +28,12 @@
 
 2.  **Install dependencies**
     ```bash
-    npm install
+    bun install
     ```
 
 3.  **Run the development server**
     ```bash
-    npm run dev
+    bun run dev
     ```
 
 ## 📝 License
